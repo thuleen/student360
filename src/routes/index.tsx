@@ -14,12 +14,13 @@ export default function Home() {
   })
   return (
     <Show when={authenticated()}>
-      <main class="min-h-screen flex justify-center bg-gray-50 text-gray-700">
+      <main class="text-center mx-auto text-gray-700 px-10 lg:px-32">
+
+        <h1 class="text-4xl text-sky-700 font-thin uppercase my-16">Home</h1>
         <div class="mt-7">
-          <h1 class="text-4xl text-sky-700 font-thin">Home</h1>
           <ul class="list-inside">
             <li>
-              <A href="/student" class="text-blue-600 hover:underline">I want to upload Student Data ...</A>
+              <A href="/student" class="text-blue-600 hover:underline">I want to upload student info ...</A>
             </li>
           </ul>
         </div>
