@@ -25,7 +25,6 @@ export default function Student() {
   return (
     <main class="text-center mx-auto text-gray-700 px-10 lg:px-32">
       <h1 class="text-4xl text-sky-700 font-thin uppercase my-16">Student</h1>
-      <p class="text-gray-500">Select PDF that contains student's information. Then click Upload.</p>
 
       <form action="/api/upload" method="post" enctype="multipart/form-data">
         <div class="my-16">
@@ -79,10 +78,10 @@ export default function Student() {
               Upload
             </button>
           </div>
+          <div class="text-gray-400">Select a PDF that contains student's information. Then click Upload.</div>
         </div>
       </form>
 
-      <A href="/" class="text-blue-600 hover:underline">Back home</A>
     </main>
 
 
