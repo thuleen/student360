@@ -39,7 +39,7 @@ export default function Student() {
             />
           </form>
           <div class="container mx-auto px-3">
-            <button onClick={() => setFileAnalyzed(true)}>Test chatbot</button>
+            <button class="text-sm text-gray-400" onClick={() => setFileAnalyzed(true)}>Test chatbot</button>
           </div>
         </>
       ) : (

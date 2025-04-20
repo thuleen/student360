@@ -32,11 +32,11 @@ export default function UploadForm(props: UploadFormProps): JSX.Element {
         </label>
 
         {props.fileName() && (
-          <div class="mx-4 text-gray-700 text-sm">{props.fileName()}</div>
+          <div class="mx-1 text-gray-700 text-sm">{props.fileName()}</div>
         )}
 
         {!props.fileName() && (
-          <div class="mx-4 text-gray-500 text-sm">PDF file contains student info. Then click Upload.</div>
+          <div class="mx-1 text-gray-500 text-sm">file contains student info. Then click Upload.</div>
         )}
 
         <div class="flex-grow"></div>
@@ -44,7 +44,7 @@ export default function UploadForm(props: UploadFormProps): JSX.Element {
           <button
             type="button"
             onClick={props.handleClearFile}
-            class="text-gray-500 hover:text-gray-400 mx-3"
+            class="text-gray-500 hover:text-gray-400 mx-3 text-xs"
           >
             ✕
           </button>)}
