@@ -14,7 +14,7 @@ export default function Home() {
   })
   return (
     <Show when={authenticated()}>
-      <main class="container mx-auto px-3">
+      <main class="container mx-auto px-3 pt-16">
         <ul class="list-inside">
           <li>
             <A href="/student" class="text-blue-600 hover:underline">I want to upload student info ...</A>

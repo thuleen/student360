@@ -3,7 +3,7 @@ import Counter from "~/components/Counter";
 
 export default function About() {
   return (
-    <main class="container mx-auto px-3">
+    <main class="container mx-auto px-3 pt-16">
       <p class="text-gray-600">
         Student360 or "S360" is an innovative platform that revolutionizes the way students are monitored and guided throughout their academic journey.
         Built with cutting-edge Blockchain and Artificial Intelligence technologies, S360 provides a holistic view of each student’s growth, behavior, and academic tendencies — especially in boarding school environments.

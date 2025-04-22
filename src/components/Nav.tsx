@@ -24,7 +24,7 @@ export default function Nav() {
   const active = (path: string) =>
     path == location.pathname ? "border-sky-600" : "border-transparent hover:border-sky-600";
   return (
-    <nav class="bg-white">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white">
       <div class="container mx-auto flex justify-between items-center p-3 text-gray-700">
         <div class="font-semibold text-lg">
           <A href="/">Student360</A>

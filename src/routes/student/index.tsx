@@ -27,7 +27,7 @@ export default function Student() {
   };
 
   return (
-    <main class="mx-auto text-gray-700">
+    <main class="my-auto mx-auto text-gray-700 pt-16">
       {!fileAnalyzed() ? (
         <>
           <form action="/api/upload" method="post" enctype="multipart/form-data">

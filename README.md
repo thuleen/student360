@@ -1,32 +1,26 @@
-# SolidStart
+# Student 360 ("S360")
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+## Minimum Viable Product
 
-## Creating a project
+Automated AI understanding of document input, blockchain-verifiable response and auditable trails.
 
-```bash
-# create a new project in the current directory
-npm init solid@latest
+## User story
 
-# create a new project in my-app
-npm init solid@latest my-app
-```
+_As government officer, Farah uses S360 to help her to automate analysis in order to determine eligibility for scholarships of students based on submitted PDF files._
 
-## Developing
+### Usage flow
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. Logs in to S360.
+2. Upload a pdf file.
+3. S360 analyse and generated results, such as:
 
-```bash
-npm run dev
+   - Total score;
+   - Rankingr;
+   - etc.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+4. Farah may ask other related questions.
+5. Farah can verify the results.
+6. Farah can save the results for audit trails or other purposes.
 
-## Building
+### Acceptance criteria
 
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
-
-## This project was created with the [Solid CLI](https://solid-cli.netlify.app)

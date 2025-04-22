@@ -37,15 +37,30 @@ export default function ChatBot() {
         </For>
       </div>
 
+      {/* Suggested Questions Bubbles */}
+      <div class="sticky bottom-35 bg-white z-10 p-3 flex flex-wrap gap-2">
+        <For each={["What is the student's progress?", "What is the student's latest ranking?", "Provide student's psychometric assessment", "How is the attendance?", "Any feedback from teachers?"]}>
+          {(question) => (
+            <button
+              type="button"
+              class="px-3 py-1 bg-gray-200 text-sm rounded-full hover:bg-gray-300"
+              onClick={() => setInput(question)}
+            >
+              {question}
+            </button>
+          )}
+        </For>
+      </div>
+
       {/* Input Form */}
       <form
         onSubmit={handleSend}
-        class="sticky bottom-7 bg-white flex p-3 items-center space-x-3 border-t border-gray-200"
+        class="sticky bottom-19 bg-white flex p-3 items-center space-x-3 border-t border-gray-200"
       >
         <input
           type="text"
           class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Ask about the student..."
+          placeholder="Ask about the student or click any of the predefined questions above ..."
           value={input()}
           onInput={(e) => setInput(e.currentTarget.value)}
         />
@@ -56,6 +71,15 @@ export default function ChatBot() {
           Ask
         </button>
       </form>
+
+      {/* File Link Placeholder */}
+      <div class="sticky bottom-12 mt-2 px-3 text-sm text-blue-600 underline">
+        {/* You can conditionally render this if a file exists */}
+        <a href="/student/uploadfile" target="_blank" rel="noopener noreferrer">
+          View student_form_2025.pdf...
+        </a>
+      </div>
+
     </main>
 
   );
