@@ -24,10 +24,11 @@ export default function App() {
               <Suspense>{props.children}</Suspense>
             </div>
           </MetaProvider>
-        )}
+        )
+        }
       >
         <FileRoutes />
-      </Router>
-    </XServiceProvider>
+      </Router >
+    </XServiceProvider >
   );
 }

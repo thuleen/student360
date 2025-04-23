@@ -3,12 +3,10 @@ import { createSignal } from "solid-js";
 import UploadForm from "~/components/UploadForm";
 import ChatBot from '~/components/ChatBot';
 
-export default function Student() {
+export default function Upload() {
   const [fileSelected, setFileSelected] = createSignal(false);
-
-  const [fileName, setFileName] = createSignal<string | null>(null);
-
   const [fileAnalyzed, setFileAnalyzed] = createSignal(false);
+  const [fileName, setFileName] = createSignal<string | null>(null);
 
   const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -27,19 +25,24 @@ export default function Student() {
   };
 
   return (
-    <main class="container mx-auto px-3 pt-16">
-      <header class="p-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-700">Student</h1>
-        {/* Action: Upload Student File */}
-        <div class="flex items-center space-x-3">
-          <label
-            for="upload"
-            class="cursor-pointer px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
-          >
-            <A href="/student/upload" class="text-white hover:underline">Upload file ...</A>
-          </label>
-        </div>
-      </header>
+    <main class="my-auto mx-auto text-gray-700 pt-16">
+      {!fileAnalyzed() ? (
+        <>
+          <form action="/api/upload" method="post" enctype="multipart/form-data">
+            <UploadForm
+              fileName={fileName}
+              fileSelected={fileSelected}
+              handleFileChange={handleFileChange}
+              handleClearFile={handleClearFile}
+            />
+          </form>
+          <div class="container mx-auto px-3">
+            <button class="text-sm text-gray-400" onClick={() => setFileAnalyzed(true)}>Test chatbot</button>
+          </div>
+        </>
+      ) : (
+        <ChatBot />
+      )}
     </main>
 
   )

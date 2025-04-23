@@ -40,6 +40,7 @@ export default function Nav(props: {
         </div>
         <ul class="p-4 space-y-2">
           <li><A href="/" onClick={() => props.setShowDrawer(false)}>Dashboard</A></li>
+          <li><A href="/student" onClick={() => props.setShowDrawer(false)}>Student</A></li>
           <li><A href="/about" onClick={() => props.setShowDrawer(false)}>About</A></li>
         </ul>
       </div>

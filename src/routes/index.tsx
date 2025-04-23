@@ -2,6 +2,7 @@ import { getUser, logout } from "~/auth.js"
 import { A, useNavigate } from "@solidjs/router"
 import { Show, createSignal, onMount } from "solid-js"
 import { remult } from "remult"
+import Dashboard from "~/components/Dashboard"
 
 export default function Home() {
   const [authenticated, setAuthenticated] = createSignal(false)
@@ -15,11 +16,12 @@ export default function Home() {
   return (
     <Show when={authenticated()}>
       <main class="container mx-auto px-3 pt-16">
-        <ul class="list-inside">
+        <Dashboard />
+        {/* <ul class="list-inside">
           <li>
             <A href="/student" class="text-blue-600 hover:underline">I want to upload student info ...</A>
           </li>
-        </ul>
+        </ul> */}
       </main>
     </Show>
   );
