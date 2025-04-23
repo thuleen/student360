@@ -18,7 +18,7 @@ export default function App() {
             <Nav showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
             {/* Main content that moves with the drawer */}
             <div
-              class={`transition-transform duration-300 ${showDrawer() ? "translate-x-64" : ""
+              class={`transition-all duration-300 ${showDrawer() ? "ml-64" : "ml-0"
                 }`}
             >
               <Suspense>{props.children}</Suspense>
