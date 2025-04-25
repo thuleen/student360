@@ -86,18 +86,20 @@ export default function Nav(props: {
 
             {showMenu() && (
               <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md z-50">
-
-                <A
-                  href="/settings"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setShowMenu(false)}
-                >
-                  <span class="flex items-center space-x-2">
-                    <User class="w-4 h-4" />
-                    <span>{`${user()?.name}...` ?? "..."}</span>
-                  </span>
-                </A>
-
+                {
+                  <Show when={user()}>
+                    <A
+                      href="/settings"
+                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowMenu(false)}
+                    >
+                      <span class="flex items-center space-x-2">
+                        <User class="w-4 h-4" />
+                        <span>{`${user()?.name}` ?? "..."}</span>
+                      </span>
+                    </A>
+                  </Show>
+                }
                 <A
                   href="/settings"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
