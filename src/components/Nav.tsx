@@ -1,14 +1,14 @@
-import { Show, createSignal, onMount } from "solid-js"
+import { Show, createSignal, onMount, createEffect } from "solid-js"
 import { remult } from "remult"
 import { Settings, Info, LogOut } from "lucide-solid";
 import { A, useLocation } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
-import { useAuthService } from "~/contexts/useAuthService";
+import { useUserService } from "~/contexts/useUserService";
 import sidebarIcon from "./sidebar.png"
 
-import { getUser, logout } from "~/auth.js"
+import { getUser } from "~/auth.js"
 import { clickOutside } from "./clickOutside";
-
+import { APP_NAME } from "~/app";
 
 export default function Nav(props: {
   showDrawer: () => boolean;
@@ -16,26 +16,35 @@ export default function Nav(props: {
 }) {
 
 
+  const { user, logout, refetchUser } = useUserService();
   const [showMenu, setShowMenu] = createSignal(false);
-
   const [showDrawer, setShowDrawer] = createSignal(false);
   const [authenticated, setAuthenticated] = createSignal(false)
-  const { bebe } = useAuthService();
   const navigate = useNavigate();
 
   onMount(async () => {
     remult.user = await getUser()
-    if (remult.authenticated()) setAuthenticated(true)
+    if (remult.authenticated()) {
+      setAuthenticated(true)
+    }
     else setAuthenticated(false)
+
+    refetchUser();
   })
 
   const location = useLocation();
   const active = (path: string) =>
     path == location.pathname ? "border-sky-600" : "border-transparent hover:border-sky-600";
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+    setShowMenu(false);
+  }
+
+
   return (
     <>
-
       {/* Sidebar Drawer */}
       <div
         class={`fixed top-0 left-0 h-full w-64 bg-gray-100 z-40 transition-transform duration-300 ${props.showDrawer() ? "translate-x-0" : "-translate-x-full"
@@ -62,7 +71,7 @@ export default function Nav(props: {
               <img src={sidebarIcon} alt="Menu" class="w-6 h-6 object-contain rounded-md hover:bg-gray-200 cursor-pointer focus:outline-none" />
             </button>
             <div class="font-semibold text-lg">
-              <A href="/">Student360</A>
+              <A href="/">{APP_NAME}</A>
             </div>
           </div>
 
@@ -72,7 +81,7 @@ export default function Nav(props: {
               onClick={() => setShowMenu(!showMenu())}
               class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-500 text-white font-bold hover:bg-blue-700"
             >
-              U
+              {user()?.name?.charAt(0).toUpperCase() ?? "..."}
             </button>
 
             {showMenu() && (
@@ -104,11 +113,7 @@ export default function Nav(props: {
 
                 <button
                   class="w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
-                  onClick={async () => {
-                    await logout();
-                    navigate("/login");
-                    setShowMenu(false);
-                  }}
+                  onClick={handleLogout}
                 >
                   <span class="flex items-center space-x-2">
                     <LogOut class="w-4 h-4" />
@@ -116,8 +121,6 @@ export default function Nav(props: {
                   </span>
                 </button>
               </div>
-
-
             )}
           </div>
         </div>

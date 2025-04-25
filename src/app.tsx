@@ -4,17 +4,20 @@ import { FileRoutes } from "@solidjs/start/router";
 import { createSignal, Suspense } from "solid-js";
 import Nav from "~/components/Nav";
 import "./app.css";
-import { AuthServiceProvider } from "./contexts/useAuthService";
+// import { AuthServiceProvider } from "./contexts/useAuthService";
+import { UserServiceProvider } from "./contexts/useUserService";
+
+export const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 export default function App() {
   const [showDrawer, setShowDrawer] = createSignal(false);
 
   return (
-    <AuthServiceProvider>
+    <UserServiceProvider>
       <Router
         root={props => (
           <MetaProvider>
-            <Title>Student360</Title>
+            <Title>{APP_NAME}</Title>
             <Nav showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
             {/* Main content that moves with the drawer */}
             <div
@@ -29,6 +32,6 @@ export default function App() {
       >
         <FileRoutes />
       </Router >
-    </AuthServiceProvider >
+    </UserServiceProvider >
   );
 }
