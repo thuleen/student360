@@ -84,14 +84,14 @@ const Dashboard: Component = () => {
     tooltip: {},
     xAxis: {
       type: "category",
-      data: ["At risk", "Behavior change"]
+      data: ["At risk", "Behavior D", "N"]
     },
     yAxis: { type: "value" },
     series: [
       {
-        data: [4, 7],
+        data: [3, 7, 9],
         type: "bar",
-        itemStyle: { color: "#dc2626" },
+        itemStyle: { color: " #b7edd6" },
         animationDelay: (idx: number) => idx * 200
       }
     ],
@@ -103,6 +103,12 @@ const Dashboard: Component = () => {
       <header class="p-6 flex justify-between items-center">
         {/* Action: Upload Student File */}
         <div class="flex items-center space-x-3">
+          <label
+            for="upload"
+            class="cursor-pointer px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+          >
+            <A href="/student" class="text-white hover:underline">Student</A>
+          </label>
           <label
             for="upload"
             class="cursor-pointer px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"

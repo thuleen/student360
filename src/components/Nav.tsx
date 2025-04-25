@@ -1,16 +1,22 @@
 import { Show, createSignal, onMount } from "solid-js"
 import { remult } from "remult"
+import { Settings, Info, LogOut } from "lucide-solid";
 import { A, useLocation } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
 import { useXService } from "~/contexts/useXService";
 import sidebarIcon from "./sidebar.png"
 
 import { getUser, logout } from "~/auth.js"
+import { clickOutside } from "./clickOutside";
+
 
 export default function Nav(props: {
   showDrawer: () => boolean;
   setShowDrawer: (v: boolean) => void;
 }) {
+
+
+  const [showMenu, setShowMenu] = createSignal(false);
 
   const [showDrawer, setShowDrawer] = createSignal(false);
   const [authenticated, setAuthenticated] = createSignal(false)
@@ -23,13 +29,13 @@ export default function Nav(props: {
     else setAuthenticated(false)
   })
 
-
-
   const location = useLocation();
   const active = (path: string) =>
     path == location.pathname ? "border-sky-600" : "border-transparent hover:border-sky-600";
+
   return (
     <>
+
       {/* Sidebar Drawer */}
       <div
         class={`fixed top-0 left-0 h-full w-64 bg-gray-100 z-40 transition-transform duration-300 ${props.showDrawer() ? "translate-x-0" : "-translate-x-full"
@@ -45,7 +51,6 @@ export default function Nav(props: {
         </ul>
       </div>
 
-      {/* Top Navbar */}
       <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
         <div class="container mx-auto flex justify-between items-center p-3 text-gray-700">
           <div class="flex items-center space-x-3">
@@ -60,14 +65,60 @@ export default function Nav(props: {
               <A href="/">Student360</A>
             </div>
           </div>
-          <div class="flex items-center space-x-4">
-            <A href="/about" class="text-sm text-gray-400 hover:text-blue-500">About</A>
+
+          {/* Avatar & Dropdown */}
+          <div class="relative" use:clickOutside={() => setShowMenu(false)}>
             <button
-              class="text-sm text-gray-400 hover:text-red-500"
-              onClick={async () => logout().then(() => navigate("/login"))}
+              onClick={() => setShowMenu(!showMenu())}
+              class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-500 text-white font-bold hover:bg-blue-700"
             >
-              Logout
+              U
             </button>
+
+            {showMenu() && (
+              <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md z-50">
+                <A
+                  href="/settings"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => setShowMenu(false)}
+                >
+                  <span class="flex items-center space-x-2">
+                    <Settings class="w-4 h-4" />
+                    <span>Settings</span>
+                  </span>
+                </A>
+
+                <A
+                  href="/about"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  onClick={() => setShowMenu(false)}
+                >
+                  <span class="flex items-center space-x-2">
+                    {/* Use an empty span to reserve icon space */}
+                    <span class="w-4 h-4" />
+                    <span>About</span>
+                  </span>
+                </A>
+
+                <hr class="border-t border-gray-200 mx-4" />
+
+                <button
+                  class="w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
+                  onClick={async () => {
+                    await logout();
+                    navigate("/login");
+                    setShowMenu(false);
+                  }}
+                >
+                  <span class="flex items-center space-x-2">
+                    <LogOut class="w-4 h-4" />
+                    <span>Logout</span>
+                  </span>
+                </button>
+              </div>
+
+
+            )}
           </div>
         </div>
       </nav>

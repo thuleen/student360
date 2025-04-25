@@ -28,19 +28,31 @@ export default function Student() {
 
   return (
     <main class="container mx-auto px-3 pt-16">
-      <header class="p-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-gray-700">Student</h1>
-        {/* Action: Upload Student File */}
-        <div class="flex items-center space-x-3">
-          <label
-            for="upload"
-            class="cursor-pointer px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+      {/* Actions: Search + Upload */}
+      <div class="p-6 flex flex-col md:flex-row md:items-center md:space-x-1">
+        {/* Search Form */}
+        <form class="flex flex-1 gap-2">
+          <input
+            type="text"
+            placeholder="Search student..."
+            class="flex-grow px-4 py-2 h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            class="h-10 px-4 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center justify-center"
           >
-            <A href="/student/upload" class="text-white hover:underline">Upload file ...</A>
-          </label>
-        </div>
-      </header>
-    </main>
+            Search
+          </button>
+          <A
+            href="/student/upload"
+            class="h-10 px-4 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center justify-center"
+          >
+            Upload Info
+          </A>
+        </form>
+      </div>
 
+      {/* Content below: student table or list goes here */}
+    </main>
   )
 }

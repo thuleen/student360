@@ -25,7 +25,7 @@ export default function Upload() {
   };
 
   return (
-    <main class="my-auto mx-auto text-gray-700 pt-16">
+    <main class="container mx-auto px-3 pt-21">
       {!fileAnalyzed() ? (
         <>
           <form action="/api/upload" method="post" enctype="multipart/form-data">
