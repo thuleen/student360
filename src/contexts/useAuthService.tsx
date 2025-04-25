@@ -4,7 +4,7 @@ interface ProviderProps {
   children: JSX.Element; // JSX.Element for Solid.js
 }
 
-export function createXServiceHook() {
+export function createAuthServiceHook() {
 
   interface ContextValueProps {
     bebe: Accessor<string>;
@@ -23,19 +23,19 @@ export function createXServiceHook() {
     return <Context.Provider value={value}> {props.children} </Context.Provider>;
   }
 
-  function useXServiceContext() {
+  function useAuthServiceContext() {
     const ctx = useContext(Context);
     if (!ctx) {
-      throw new Error("useXServiceContext must be used within a XServiceProvider");
+      throw new Error("useAuthServiceContext must be used within a AuthServiceProvider");
     }
     return ctx;
   }
 
   return {
     Provider,
-    useXServiceContext,
+    useAuthServiceContext,
   };
 }
 
-const { Provider, useXServiceContext } = createXServiceHook();
-export { Provider as XServiceProvider, useXServiceContext as useXService };
+const { Provider, useAuthServiceContext } = createAuthServiceHook();
+export { Provider as AuthServiceProvider, useAuthServiceContext as useAuthService };

@@ -3,7 +3,7 @@ import { remult } from "remult"
 import { Settings, Info, LogOut } from "lucide-solid";
 import { A, useLocation } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
-import { useXService } from "~/contexts/useXService";
+import { useAuthService } from "~/contexts/useAuthService";
 import sidebarIcon from "./sidebar.png"
 
 import { getUser, logout } from "~/auth.js"
@@ -20,7 +20,7 @@ export default function Nav(props: {
 
   const [showDrawer, setShowDrawer] = createSignal(false);
   const [authenticated, setAuthenticated] = createSignal(false)
-  const { bebe } = useXService();
+  const { bebe } = useAuthService();
   const navigate = useNavigate();
 
   onMount(async () => {

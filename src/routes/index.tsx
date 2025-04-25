@@ -13,6 +13,7 @@ export default function Home() {
     if (remult.authenticated()) setAuthenticated(true)
     else navigate("/login")
   })
+
   return (
     <Show when={authenticated()}>
       <main class="container mx-auto px-3 pt-16">

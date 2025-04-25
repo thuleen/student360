@@ -4,13 +4,13 @@ import { FileRoutes } from "@solidjs/start/router";
 import { createSignal, Suspense } from "solid-js";
 import Nav from "~/components/Nav";
 import "./app.css";
-import { XServiceProvider } from "./contexts/useXService";
+import { AuthServiceProvider } from "./contexts/useAuthService";
 
 export default function App() {
   const [showDrawer, setShowDrawer] = createSignal(false);
 
   return (
-    <XServiceProvider>
+    <AuthServiceProvider>
       <Router
         root={props => (
           <MetaProvider>
@@ -29,6 +29,6 @@ export default function App() {
       >
         <FileRoutes />
       </Router >
-    </XServiceProvider >
+    </AuthServiceProvider >
   );
 }
