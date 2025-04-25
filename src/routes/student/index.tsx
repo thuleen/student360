@@ -27,7 +27,7 @@ export default function Student() {
   };
 
   return (
-    <main class="container mx-auto px-3 pt-16">
+    <main class="container mx-auto px-3 pt-21">
       {/* Actions: Search + Upload */}
       <div class="p-6 flex flex-col md:flex-row md:items-center md:space-x-1">
         {/* Search Form */}
