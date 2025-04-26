@@ -1,18 +1,8 @@
-import { A, useNavigate } from '@solidjs/router';
-import { createSignal, onMount } from 'solid-js'
-import { remult } from "remult"
-import { getUser } from "~/auth.js"
+import { For, createSignal } from "solid-js";
+import { remult } from "remult";
 
-export default function Student() {
-
-  const [authenticated, setAuthenticated] = createSignal(false)
-  const navigate = useNavigate()
-
-  onMount(async () => {
-    remult.user = await getUser()
-    if (remult.authenticated()) setAuthenticated(true)
-    else navigate("/login")
-  })
+export default function StudentPage() {
+  const [search, setSearch] = createSignal("");
 
   return (
     <main class="container mx-auto px-3 pt-21">
@@ -24,6 +14,8 @@ export default function Student() {
             type="text"
             placeholder="Search student..."
             class="flex-grow px-4 py-2 h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
+            value={search()}
+            onInput={(e) => setSearch(e.currentTarget.value)}
           />
           <button
             type="submit"
@@ -33,7 +25,6 @@ export default function Student() {
           </button>
         </form>
       </div>
-      {/* Content below: student table or list goes here */}
     </main>
-  )
+  );
 }

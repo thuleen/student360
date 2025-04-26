@@ -50,7 +50,7 @@ export default function ChatBot() {
       </div>
 
       {/* Suggested Questions */}
-      <div class="sticky bottom-45 bg-white z-10 p-3 flex flex-wrap gap-2">
+      <div class="sticky bottom-57 bg-white z-10 p-3 flex flex-wrap gap-2">
         <For
           each={[
             "What is the student progress",

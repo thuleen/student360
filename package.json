@@ -17,6 +17,8 @@
     "vinxi": "^0.5.3"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.25.9",
+    "@babel/plugin-transform-class-properties": "^7.25.9",
     "@tailwindcss/vite": "^4.0.7",
     "tailwindcss": "^4.0.7"
   },
