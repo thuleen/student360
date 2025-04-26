@@ -2,7 +2,8 @@ import { createSignal, For } from "solid-js";
 import { Plus } from "lucide-solid";
 
 export default function ChatBot() {
-  const [messages, setMessages] = createSignal<{ from: "user" | "bot"; text: string }[]>([]);
+  // const [messages, setMessages] = createSignal<{ from: "user" | "bot"; text: string }[]>([]);
+  const [messages, setMessages] = createSignal<string[]>([]);
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
 
@@ -17,7 +18,7 @@ export default function ChatBot() {
 
     // Simulate AI response
     setTimeout(() => {
-      const response = `AI response to: "${userInput}"${file() ? ` with file: ${file()?.name}` : ""}`;
+      const response = `${userInput}${file() ? ` with file: ${file()?.name}` : ""}`;
       setMessages((prev) => [...prev, { from: "bot", text: response }]);
     }, 600);
   };
@@ -32,7 +33,7 @@ export default function ChatBot() {
               <div
                 class={`inline-block px-4 py-2 rounded-md ${msg.from === "user"
                   ? "bg-gray-100 text-gray-800"
-                  : "bg-blue-100 text-black"
+                  : "bg-white text-black"
                   }`}
               >
                 {msg.text}
@@ -45,9 +46,9 @@ export default function ChatBot() {
       <div class="sticky bottom-50 bg-white z-10 p-3 flex flex-wrap gap-2">
         <For
           each={[
-            "What is the student's progress",
-            "What is the student's latest ranking",
-            "Provide student's psychometric assessment",
+            "What is the student progress",
+            "What is the student latest ranking",
+            "Provide student psychometric assessment",
             "How is the attendance",
             "Any feedback from teachers",
           ]}
