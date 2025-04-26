@@ -1,49 +1,61 @@
-
-// src/components/ChatBot.tsx
 import { createSignal, For } from "solid-js";
+import { Plus } from "lucide-solid";
 
 export default function ChatBot() {
-  const [messages, setMessages] = createSignal<string[]>([]);
+  const [messages, setMessages] = createSignal<{ from: "user" | "bot"; text: string }[]>([]);
   const [input, setInput] = createSignal("");
+  const [file, setFile] = createSignal<File | null>(null);
 
   const handleSend = (e: Event) => {
     e.preventDefault();
-    if (!input().trim()) return;
-    setMessages([...messages(), input()]);
+    const userInput = input().trim();
+    if (!userInput && !file()) return;
+
+    // Append user message
+    setMessages([...messages(), { from: "user", text: userInput }]);
     setInput("");
-    // Simulate a reply
+
+    // Simulate AI response
     setTimeout(() => {
-      setMessages((prev) => [...prev, "This is an AI response."]);
+      const response = `AI response to: "${userInput}"${file() ? ` with file: ${file()?.name}` : ""}`;
+      setMessages((prev) => [...prev, { from: "bot", text: response }]);
     }, 600);
   };
 
   return (
     <main class="container mx-auto px-3 h-screen flex flex-col">
       {/* Chat Area */}
-      <div class="flex-1 overflow-y-auto p-3 space-y-3 pb-28">
+      <div class="flex-1 overflow-y-auto p-3 space-y-3 pb-36">
         <For each={messages()}>
-          {(msg, i) => (
-            <div class={i() % 2 === 0 ? "text-right" : "text-left"}>
+          {(msg) => (
+            <div class={msg.from === "user" ? "text-right" : "text-left"}>
               <div
-                class={`inline-block px-4 py-2 rounded-md ${i() % 2 === 0
+                class={`inline-block px-4 py-2 rounded-md ${msg.from === "user"
                   ? "bg-gray-100 text-gray-800"
-                  : "bg-white text-black"
+                  : "bg-blue-100 text-black"
                   }`}
               >
-                {msg}
+                {msg.text}
               </div>
             </div>
           )}
         </For>
       </div>
-
-      {/* Suggested Questions Bubbles */}
-      <div class="sticky bottom-35 bg-white z-10 p-3 flex flex-wrap gap-2">
-        <For each={["What is the student's progress?", "What is the student's latest ranking?", "Provide student's psychometric assessment", "How is the attendance?", "Any feedback from teachers?"]}>
+      {/* Suggested Questions */}
+      <div class="sticky bottom-50 bg-white z-10 p-3 flex flex-wrap gap-2">
+        <For
+          each={[
+            "What is the student's progress",
+            "What is the student's latest ranking",
+            "Provide student's psychometric assessment",
+            "How is the attendance",
+            "Any feedback from teachers",
+          ]}
+        >
           {(question) => (
             <button
               type="button"
-              class="cursor-pointer px-3 py-1 bg-gray-200 text-sm rounded-full hover:bg-gray-300"
+              class="cursor-pointer px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200"
               onClick={() => setInput(question)}
             >
               {question}
@@ -51,37 +63,46 @@ export default function ChatBot() {
           )}
         </For>
       </div>
-
-      {/* Input Form */}
+      {/* Input Area */}
       <form
         onSubmit={handleSend}
-        class="sticky bottom-19 bg-white flex p-3 items-center space-x-3 border-t border-gray-200"
+        class="sticky bottom-17 bg-white flex flex-col p-3 gap-5"
       >
         <input
           type="text"
-          class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Ask about the student or click any of the predefined questions above ..."
+          class="border border-gray-300 p-3 rounded"
+          placeholder="Ask something..."
           value={input()}
           onInput={(e) => setInput(e.currentTarget.value)}
         />
-        <button
-          type="submit"
-          class="cursor-pointer px-5 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-400"
-        >
-          Ask
-        </button>
+
+        <div class="flex items-center justify-between">
+          {/* Upload Button */}
+          <div>
+            <input
+              id="file-upload"
+              type="file"
+              class="hidden"
+              onChange={(e) => setFile(e.currentTarget.files?.[0] || null)}
+            />
+            <label
+              for="file-upload"
+              class="cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-gray-100 border border-gray-300 rounded-full"
+            >
+              <Plus class="w-5 h-5" />
+            </label>
+          </div>
+          {/* Send Button */}
+          <button
+            type="submit"
+            class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-400"
+          >
+            Ask
+          </button>
+        </div>
       </form>
 
-      {/* File Link Placeholder */}
-      <div class="sticky bottom-12 mt-2 px-3 text-sm text-blue-600 underline">
-        {/* You can conditionally render this if a file exists */}
-        <a href="/student/uploadfile" target="_blank" rel="noopener noreferrer">
-          View student_form_2025.pdf...
-        </a>
-      </div>
-
     </main>
-
   );
 }
 
