@@ -24,6 +24,11 @@ export function createUserServiceHook() {
     // const [userRes] = createResource(getUser);
     const [userRes, { refetch }] = createResource(getUser);
 
+    createEffect(() => {
+      console.log("userRes loading:", userRes.loading);
+      console.log("userRes data:", userRes());
+    });
+
     const handleLogout = async () => {
       await logoutServer(); // call server function
       await refetch();      // update client state

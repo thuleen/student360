@@ -37,7 +37,7 @@ export default function Upload() {
             />
           </form>
           <div class="container mx-auto px-3">
-            <button class="text-sm text-gray-400" onClick={() => setFileAnalyzed(true)}>Test chatbot</button>
+            <button class="cursor-pointer text-sm text-gray-500" onClick={() => setFileAnalyzed(true)}>Test chatbot</button>
           </div>
         </>
       ) : (

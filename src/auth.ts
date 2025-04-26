@@ -15,7 +15,7 @@ export async function getSession() {
   return await useSession<{ user?: UserInfo }>({
     password:
       process.env["SESSION_SECRET"] ||
-      "Something secret used for development only",
+      "a_really_long_secret_password_that_you_should_seriously_replace",
   })
 }
 

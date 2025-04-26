@@ -35,17 +35,17 @@ export default function Student() {
           <input
             type="text"
             placeholder="Search student..."
-            class="flex-grow px-4 py-2 h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="flex-grow px-4 py-2 h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
           />
           <button
             type="submit"
-            class="h-10 px-4 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center justify-center"
+            class="cursor-pointer h-10 px-4 text-sm bg-gray-700 text-white rounded-md hover:bg-gray-400 transition flex items-center justify-center"
           >
             Search
           </button>
           <A
             href="/student/upload"
-            class="h-10 px-4 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center justify-center"
+            class="cursor-pointer h-10 px-4 text-sm bg-gray-700 text-white rounded-md hover:bg-gray-400 transition flex items-center justify-center"
           >
             Upload Info
           </A>

@@ -10,7 +10,7 @@ interface UploadFormProps {
 export default function UploadForm(props: UploadFormProps): JSX.Element {
   return (
     <div class="container mx-auto px-3">
-      <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+      <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-gray-700">
         <div class="shrink-0 text-base text-gray-500 select-none sm:text-sm/6 px-7">
           PDF
         </div>
@@ -26,7 +26,7 @@ export default function UploadForm(props: UploadFormProps): JSX.Element {
 
         <label
           for="file-input"
-          class="cursor-pointer py-2 px-4 bg-blue-500 text-white hover:bg-blue-600 rounded-l-md"
+          class="cursor-pointer py-2 px-4 bg-gray-700 text-white hover:bg-gray-400 rounded-l-md"
         >
           Select
         </label>
@@ -51,7 +51,7 @@ export default function UploadForm(props: UploadFormProps): JSX.Element {
 
         <button
           type="submit"
-          class="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600 rounded-r-md disabled:opacity-50 disabled:cursor-not-allowed"
+          class="cursor-pointer bg-gray-700 text-white px-4 py-2 hover:bg-gray-400 rounded-r-md disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!props.fileSelected()}
         >
           Upload

@@ -76,67 +76,66 @@ export default function Nav(props: {
           </div>
 
           {/* Avatar & Dropdown */}
-          <div class="relative" use:clickOutside={() => setShowMenu(false)}>
-            <button
-              onClick={() => setShowMenu(!showMenu())}
-              class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-500 text-white font-bold hover:bg-blue-700"
-            >
-              {user()?.name?.charAt(0).toUpperCase() ?? "..."}
-            </button>
+          {<Show when={user()}>
+            <div class="relative" use:clickOutside={() => setShowMenu(false)}>
+              <button
+                onClick={() => setShowMenu(!showMenu())}
+                class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full bg-gray-700 text-white font-bold hover:bg-gray-400"
+              >
+                {user()?.name?.charAt(0).toUpperCase() ?? "..."}
+              </button>
 
-            {showMenu() && (
-              <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md z-50">
-                {
-                  <Show when={user()}>
-                    <A
-                      href="/user"
-                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setShowMenu(false)}
-                    >
-                      <span class="flex items-center space-x-2">
-                        <User class="w-4 h-4" />
-                        <span>{`${user()?.name}` ?? "..."}</span>
-                      </span>
-                    </A>
-                  </Show>
-                }
-                <A
-                  href="/settings"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setShowMenu(false)}
-                >
-                  <span class="flex items-center space-x-2">
-                    <Settings class="w-4 h-4" />
-                    <span>Settings</span>
-                  </span>
-                </A>
+              {showMenu() && (
+                <div class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md z-50">
+                  <A
+                    href="/user"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    <span class="flex items-center space-x-2">
+                      <User class="w-4 h-4" />
+                      <span>{`${user()?.name}` ?? "..."}</span>
+                    </span>
+                  </A>
+                  <A
+                    href="/settings"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    <span class="flex items-center space-x-2">
+                      <Settings class="w-4 h-4" />
+                      <span>Settings</span>
+                    </span>
+                  </A>
 
-                <A
-                  href="/about"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setShowMenu(false)}
-                >
-                  <span class="flex items-center space-x-2">
-                    {/* Use an empty span to reserve icon space */}
-                    <span class="w-4 h-4" />
-                    <span>About</span>
-                  </span>
-                </A>
+                  <A
+                    href="/about"
+                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    <span class="flex items-center space-x-2">
+                      {/* Use an empty span to reserve icon space */}
+                      <span class="w-4 h-4" />
+                      <span>About</span>
+                    </span>
+                  </A>
 
-                <hr class="border-t border-gray-200 mx-4" />
+                  <hr class="border-t border-gray-200 mx-4" />
 
-                <button
-                  class="w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
-                  onClick={handleLogout}
-                >
-                  <span class="flex items-center space-x-2">
-                    <LogOut class="w-4 h-4" />
-                    <span>Logout</span>
-                  </span>
-                </button>
-              </div>
-            )}
-          </div>
+                  <button
+                    class="w-full text-left px-4 py-2 text-sm text-gray-500 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    <span class="flex items-center space-x-2">
+                      <LogOut class="w-4 h-4" />
+                      <span>Logout</span>
+                    </span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </Show>
+          }
         </div>
       </nav>
     </>

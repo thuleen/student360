@@ -43,7 +43,7 @@ export default function ChatBot() {
           {(question) => (
             <button
               type="button"
-              class="px-3 py-1 bg-gray-200 text-sm rounded-full hover:bg-gray-300"
+              class="cursor-pointer px-3 py-1 bg-gray-200 text-sm rounded-full hover:bg-gray-300"
               onClick={() => setInput(question)}
             >
               {question}
@@ -66,7 +66,7 @@ export default function ChatBot() {
         />
         <button
           type="submit"
-          class="px-5 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          class="cursor-pointer px-5 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-400"
         >
           Ask
         </button>
