@@ -15,9 +15,7 @@ export default function Analyze() {
   })
 
   return (
-    <main class="container mx-auto px-3 pt-21">
-      <ChatBot />
-    </main>
+    <ChatBot />
 
   );
 }

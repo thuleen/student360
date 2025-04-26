@@ -1,9 +1,13 @@
 import { createSignal, For } from "solid-js";
-import { Plus } from "lucide-solid";
+import { Plus, ArrowUp } from "lucide-solid";
+
+type Message = {
+  from: "user" | "bot";
+  text: string;
+};
 
 export default function ChatBot() {
-  // const [messages, setMessages] = createSignal<{ from: "user" | "bot"; text: string }[]>([]);
-  const [messages, setMessages] = createSignal<string[]>([]);
+  const [messages, setMessages] = createSignal<Message[]>([]);
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
 
@@ -12,21 +16,23 @@ export default function ChatBot() {
     const userInput = input().trim();
     if (!userInput && !file()) return;
 
-    // Append user message
-    setMessages([...messages(), { from: "user", text: userInput }]);
+    setMessages([
+      ...messages(),
+      { from: "user", text: userInput || (file() ? `Uploaded: ${file()?.name}` : "") },
+    ]);
     setInput("");
+    setFile(null);
 
-    // Simulate AI response
     setTimeout(() => {
-      const response = `${userInput}${file() ? ` with file: ${file()?.name}` : ""}`;
+      const response = `AI Response to: ${userInput || file()?.name}`;
       setMessages((prev) => [...prev, { from: "bot", text: response }]);
     }, 600);
   };
 
   return (
-    <main class="container mx-auto px-3 h-screen flex flex-col">
+    <main class="container mx-auto pt-21 px-3 h-screen flex flex-col">
       {/* Chat Area */}
-      <div class="flex-1 overflow-y-auto p-3 space-y-3 pb-36">
+      <div class="flex-1 p-3 space-y-3 pb-36">
         <For each={messages()}>
           {(msg) => (
             <div class={msg.from === "user" ? "text-right" : "text-left"}>
@@ -42,8 +48,9 @@ export default function ChatBot() {
           )}
         </For>
       </div>
+
       {/* Suggested Questions */}
-      <div class="sticky bottom-50 bg-white z-10 p-3 flex flex-wrap gap-2">
+      <div class="sticky bottom-45 bg-white z-10 p-3 flex flex-wrap gap-2">
         <For
           each={[
             "What is the student progress",
@@ -64,46 +71,56 @@ export default function ChatBot() {
           )}
         </For>
       </div>
-      {/* Input Area */}
+
+      {/* Input Panel */}
       <form
         onSubmit={handleSend}
-        class="sticky bottom-17 bg-white flex flex-col p-3 gap-5"
+        class="sticky bottom-9 bg-white p-3"
       >
-        <input
-          type="text"
-          class="border border-gray-300 p-3 rounded"
-          placeholder="Ask something..."
-          value={input()}
-          onInput={(e) => setInput(e.currentTarget.value)}
-        />
+        <div class="w-full border border-gray-300 rounded-xl p-3 flex flex-col gap-3">
+          {/* Text input */}
+          <input
+            type="text"
+            class="w-full border-none focus:outline-none focus:ring-0 p-3"
+            placeholder="Ask something..."
+            value={input()}
+            onInput={(e) => setInput(e.currentTarget.value)}
+          />
 
-        <div class="flex items-center justify-between">
-          {/* Upload Button */}
-          <div>
-            <input
-              id="file-upload"
-              type="file"
-              class="hidden"
-              onChange={(e) => setFile(e.currentTarget.files?.[0] || null)}
-            />
-            <label
-              for="file-upload"
-              class="cursor-pointer w-10 h-10 flex items-center justify-center hover:bg-gray-100 border border-gray-300 rounded-full"
+          {/* File name preview */}
+          {file() && (
+            <div class="text-sm text-gray-500">
+              📎 {file()?.name}
+            </div>
+          )}
+
+          {/* Bottom action row */}
+          <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+            <div class="flex items-center gap-3">
+              {/* Upload Button */}
+              <input
+                id="file-upload"
+                type="file"
+                class="hidden"
+                onChange={(e) => setFile(e.currentTarget.files?.[0] || null)}
+              />
+              <label
+                for="file-upload"
+                class="cursor-pointer w-8 h-8 flex items-center justify-center hover:bg-gray-100 border border-gray-300 rounded-full"
+              >
+                <Plus class="w-4 h-4" />
+              </label>
+            </div>
+            {/* Send Button */}
+            <button
+              type="submit"
+              class="bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
             >
-              <Plus class="w-5 h-5" />
-            </label>
+              <ArrowUp class="w-5 h-5" />
+            </button>
           </div>
-          {/* Send Button */}
-          <button
-            type="submit"
-            class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-400"
-          >
-            Ask
-          </button>
         </div>
       </form>
-
     </main>
   );
 }
-
