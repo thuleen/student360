@@ -1,14 +1,14 @@
 import { Component, onMount } from "solid-js";
 import { A, useNavigate } from "@solidjs/router"
-import * as echarts from "echarts";
+// import * as echarts from "echarts";
 
-const createChart = (id: string, option: echarts.EChartsOption) => {
-  onMount(() => {
-    const chart = echarts.init(document.getElementById(id)!);
-    chart.setOption(option);
-    window.addEventListener("resize", () => chart.resize());
-  });
-};
+// const createChart = (id: string, option: echarts.EChartsOption) => {
+//   onMount(() => {
+//     const chart = echarts.init(document.getElementById(id)!);
+//     chart.setOption(option);
+//     window.addEventListener("resize", () => chart.resize());
+//   });
+// };
 
 const Dashboard: Component = () => {
 
@@ -107,13 +107,7 @@ const Dashboard: Component = () => {
             for="upload"
             class="cursor-pointer px-4 py-2 text-sm text-white bg-gray-700 rounded-md hover:bg-gray-400 transition"
           >
-            <A href="/student" class="text-white hover:underline">Student</A>
-          </label>
-          <label
-            for="upload"
-            class="cursor-pointer px-4 py-2 text-sm text-white bg-gray-700 rounded-md hover:bg-gray-400 transition"
-          >
-            <A href="/student/upload" class="text-white hover:underline">Upload student info ...</A>
+            <A href="/analyze" class="text-white hover:underline">Let's analyze...</A>
           </label>
         </div>
       </header>
@@ -137,16 +131,6 @@ const Dashboard: Component = () => {
             <p class="text-sm text-gray-500">Academic progress (this month)</p>
             <h2 class="text-2xl font-bold text-gray-600">85%</h2>
           </div>
-        </section>
-
-        {/* Recent activity */}
-        <section class="bg-white p-4 shadow rounded-lg">
-          <h3 class="text-lg font-semibold text-gray-700 mb-2">Recent activity</h3>
-          <ul class="space-y-2 text-sm text-gray-600">
-            <li>📥 New assignment uploaded</li>
-            <li>🗓️ Parent-teacher meeting</li>
-            <li>✅ Attendance updated</li>
-          </ul>
         </section>
 
         {/* Charts */}

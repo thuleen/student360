@@ -45,7 +45,6 @@ export default function Home() {
           </Show>
         </div>
       </form>
-      {sub.pending && <div>Loading...</div>}
       <hr class="border-t border-gray-200 mx-4 mb-9" />
       <A href="/" class="text-blue-600 hover:underline">Sign me up!</A>
     </main >

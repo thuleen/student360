@@ -18,7 +18,6 @@ export default function Nav(props: {
 
   const { user, logout, refetchUser } = useUserService();
   const [showMenu, setShowMenu] = createSignal(false);
-  const [showDrawer, setShowDrawer] = createSignal(false);
   const [authenticated, setAuthenticated] = createSignal(false)
   const navigate = useNavigate();
 
@@ -39,25 +38,24 @@ export default function Nav(props: {
   const handleLogout = async () => {
     await logout();
     navigate("/login");
-    setShowMenu(false);
+    props.setShowDrawer(false);
   }
-
 
   return (
     <>
       {/* Sidebar Drawer */}
       <div
-        class={`fixed top-0 left-0 h-full w-64 bg-gray-100 z-40 transition-transform duration-300 ${props.showDrawer() ? "translate-x-0" : "-translate-x-full"
+        class={`fixed pt-15 left-0 h-full w-64 bg-gray-100 z-40 transition-transform duration-300 ${props.showDrawer() ? "translate-x-0" : "-translate-x-full"
           }`}
       >
-        <div class="p-4">
-          <h2 class="text-lg font-semibold">Menu</h2>
-        </div>
+
         <ul class="p-4 space-y-2">
           <li><A href="/" onClick={() => props.setShowDrawer(false)}>Dashboard</A></li>
-          <li><A href="/student" onClick={() => props.setShowDrawer(false)}>Student</A></li>
+          <li><A href="/analyze" onClick={() => props.setShowDrawer(false)}>Analyze</A></li>
+          <li><A href="/students" onClick={() => props.setShowDrawer(false)}>Students</A></li>
           <li><A href="/about" onClick={() => props.setShowDrawer(false)}>About</A></li>
         </ul>
+        <hr class="border-t border-gray-200 mx-4" />
       </div>
 
       <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
