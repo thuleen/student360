@@ -15,7 +15,7 @@ _As government officer, Farah uses S360 to help her to automate analysis in orde
 3. S360 analyse and generated results, such as:
 
    - Total score;
-   - Rankingr;
+   - Ranking;
    - etc.
 
 4. Farah may ask other related questions.
