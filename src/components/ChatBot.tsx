@@ -96,7 +96,7 @@ export default function ChatBot() {
           {/* Send Button */}
           <button
             type="submit"
-            class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-400"
+            class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-400"
           >
             Ask
           </button>
