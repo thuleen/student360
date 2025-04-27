@@ -11,22 +11,33 @@ export default function ChatBot() {
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
 
-  const handleSend = (e: Event) => {
+  const handleSend = async (e: Event) => {
     e.preventDefault();
     const userInput = input().trim();
     if (!userInput && !file()) return;
 
-    setMessages([
-      ...messages(),
-      { from: "user", text: userInput || (file() ? `Uploaded: ${file()?.name}` : "") },
-    ]);
-    setInput("");
-    setFile(null);
+    const formData = new FormData();
+    formData.append('file', file()!); // add file
+    formData.append('question', input()); // add question if needed
 
-    setTimeout(() => {
-      const response = `AI Response to: ${userInput || file()?.name}`;
-      setMessages((prev) => [...prev, { from: "bot", text: response }]);
-    }, 600);
+    try {
+      const response = await fetch('/api/upload-file', {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error('Failed to upload file');
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -50,7 +61,7 @@ export default function ChatBot() {
       </div>
 
       {/* Suggested Questions */}
-      <div class="sticky bottom-57 bg-white z-10 p-3 flex flex-wrap gap-2">
+      {/* <div class="sticky bottom-57 bg-white z-10 p-3 flex flex-wrap gap-2">
         <For
           each={[
             "What is the student progress",
@@ -70,7 +81,7 @@ export default function ChatBot() {
             </button>
           )}
         </For>
-      </div>
+      </div> */}
 
       {/* Input Panel */}
       <form

@@ -37,7 +37,7 @@ export default function StudentsPage() {
         <form class="flex gap-2 mb-6" onSubmit={handleSearchSubmit}>
           <input
             type="text"
-            placeholder="Search student..."
+            placeholder="Search student by name..."
             class="flex-grow px-4 py-2 h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400"
             value={search()}
             onInput={(e) => setSearch(e.currentTarget.value)}
