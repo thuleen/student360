@@ -38,7 +38,6 @@ export default function Nav(props: {
   const handleLogout = async () => {
     await logout();
     navigate("/login");
-    props.setShowDrawer(false);
   }
 
   return (
