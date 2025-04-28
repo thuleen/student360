@@ -1,8 +1,8 @@
 // src/routes/api/upload-file.ts
 import { RequestHandler } from '@solidjs/start';
 import { json } from "@solidjs/router";
-import pdf from 'pdf-parse';
-import * as XLSX from 'xlsx';
+import { parseCsv } from '~/shared/parsers/csv';
+import { parseExcel } from '~/shared/parsers/excel';
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
@@ -36,26 +36,20 @@ export const POST: RequestHandler = async ({ request }) => {
 
     else if (fileStart.startsWith('PK')) {
       // PK is the start of ZIP files — XLSX files are ZIP archives internally
-      console.log('Detected Excel file (.xlsx)');
-
-      const workbook = XLSX.read(buffer, { type: 'buffer' });
-      const sheetNames = workbook.SheetNames;
-
-      // Let's just parse the first sheet
-      const firstSheet = workbook.Sheets[sheetNames[0]];
-      const data = XLSX.utils.sheet_to_json(firstSheet);
+      const { data, sheetNames } = parseExcel(buffer);
 
       return json({
         message: "Excel file parsed successfully",
+        sheets: sheetNames,
+        rows: data,
       });
 
     } else {
-      console.log('Assuming CSV file');
-
-      const csvContent = buffer.toString('utf-8');
+      const { rows } = parseCsv(buffer);
 
       return json({
-        message: "CSV file received"
+        message: "CSV file parsed successfully",
+        rows,
       });
     }
 
