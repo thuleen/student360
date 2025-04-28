@@ -8,6 +8,7 @@ const validUsers: UserInfo[] = [
   { id: "1", name: "Firasat", roles: ["admin"] },
   { id: "2", name: "Rizal" },
   { id: "3", name: "Anna" },
+  { id: "4", name: "Chod" },
 ]
 
 export async function getSession() {
@@ -27,7 +28,7 @@ export const loginAction = action(async (formData: FormData) => {
     const session = await getSession();
     const user = validUsers.find((x) => x.name === username);
     if (!user) {
-      return { message: "Invalid user, try 'Firasat' or 'Rizal'" };
+      return { message: "Invalid user, try 'Chod', 'Firasat' or 'Rizal'" };
     }
 
     await session.update({ user });

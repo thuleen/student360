@@ -28,7 +28,7 @@ export default function Home() {
               name="username"
               id="username"
               class="block min-w-0 grow py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-              placeholder="Firasat or Rizal"
+              placeholder="Chod or Firasat or Rizal"
             />
             <button
               disabled={sub.pending}
