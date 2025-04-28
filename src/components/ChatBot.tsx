@@ -1,5 +1,6 @@
 import { createSignal, For } from "solid-js";
-import { Plus, ArrowUp } from "lucide-solid";
+import { Plus, ArrowUp, X } from "lucide-solid";
+
 
 type Message = {
   from: "user" | "bot";
@@ -11,6 +12,19 @@ export default function ChatBot() {
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
 
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+  };
+
+  const handleFileRemove = () => {
+    setFile(null);
+  };
+
   const handleSend = async (e: Event) => {
     e.preventDefault();
     const userInput = input().trim();
@@ -20,10 +34,16 @@ export default function ChatBot() {
     formData.append('file', file()!); // add file
     formData.append('question', input()); // add question if needed
 
+    const fileData = await fileToBase64(file()!);
+
     try {
       const response = await fetch('/api/upload-file', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          file: fileData,
+          question: userInput,
+        }),
       });
 
       console.log(response);
@@ -100,8 +120,16 @@ export default function ChatBot() {
 
           {/* File name preview */}
           {file() && (
-            <div class="text-sm text-gray-500">
-              📎 {file()?.name}
+            <div class="flex items-center gap-2 text-sm text-gray-500">
+              <span>📎</span>
+              <span>{file()?.name}</span>
+              <button
+                onClick={handleFileRemove}
+                class="cursor-pointer text-gray-400 hover:text-gray-700"
+                aria-label="Remove file"
+              >
+                <X class="w-4 h-4" />
+              </button>
             </div>
           )}
 
