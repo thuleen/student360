@@ -11,6 +11,7 @@ export default function ChatBot() {
   const [messages, setMessages] = createSignal<Message[]>([]);
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
+  const [loading, setLoading] = createSignal(false);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -20,9 +21,12 @@ export default function ChatBot() {
       reader.onerror = reject;
     });
   };
-
   const handleFileRemove = () => {
     setFile(null);
+  };
+
+  const truncateFileName = (name: string, maxLength = 30) => {
+    return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
   };
 
   const handleSend = async (e: Event) => {
@@ -30,12 +34,20 @@ export default function ChatBot() {
     const userInput = input().trim();
     if (!userInput && !file()) return;
 
+    setLoading(true);
+
+    if (userInput) {
+      setMessages((prev) => [
+        ...prev,
+        { from: "user", text: userInput },
+      ]);
+    }
+
     const formData = new FormData();
     formData.append('file', file()!); // add file
     formData.append('question', input()); // add question if needed
 
     const fileData = await fileToBase64(file()!);
-
     try {
       const response = await fetch('/api/upload-file', {
         method: 'POST',
@@ -46,17 +58,26 @@ export default function ChatBot() {
         }),
       });
 
-      console.log(response);
-
       if (!response.ok) {
         throw new Error('Failed to upload file');
       }
 
       const data = await response.json();
-      console.log(data);
+
+      // 👉 New: show success message in chat
+      setMessages((prev) => [
+        ...prev,
+        { from: "bot", text: `✅ File "${file()?.name}" uploaded successfully! Ready for questions...` }
+      ]);
+
+      // Clear input after sending
+      setInput("");
+      setFile(null);
 
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,30 +100,6 @@ export default function ChatBot() {
           )}
         </For>
       </div>
-
-      {/* Suggested Questions */}
-      {/* <div class="sticky bottom-57 bg-white z-10 p-3 flex flex-wrap gap-2">
-        <For
-          each={[
-            "What is the student progress",
-            "What is the student latest ranking",
-            "Provide student psychometric assessment",
-            "How is the attendance",
-            "Any feedback from teachers",
-          ]}
-        >
-          {(question) => (
-            <button
-              type="button"
-              class="cursor-pointer px-3 py-1 bg-gray-100 text-sm rounded-full hover:bg-gray-200"
-              onClick={() => setInput(question)}
-            >
-              {question}
-            </button>
-          )}
-        </For>
-      </div> */}
-
       {/* Input Panel */}
       <form
         onSubmit={handleSend}
@@ -117,22 +114,24 @@ export default function ChatBot() {
             value={input()}
             onInput={(e) => setInput(e.currentTarget.value)}
           />
-
           {/* File name preview */}
           {file() && (
             <div class="flex items-center gap-2 text-sm text-gray-500">
               <span>📎</span>
-              <span>{file()?.name}</span>
+              <span title={file()?.name}>
+                {truncateFileName(file()?.name || "")}
+              </span>
               <button
+                type="button"
                 onClick={handleFileRemove}
                 class="cursor-pointer text-gray-400 hover:text-gray-700"
                 aria-label="Remove file"
+                disabled={loading()}
               >
                 <X class="w-4 h-4" />
               </button>
             </div>
           )}
-
           {/* Bottom action row */}
           <div class="flex items-center justify-between pt-2 border-t border-gray-200">
             <div class="flex items-center gap-3">

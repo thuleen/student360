@@ -12,6 +12,7 @@
     "@solidjs/start": "^1.1.0",
     "echarts": "^5.6.0",
     "lucide-solid": "^0.503.0",
+    "papaparse": "^5.5.2",
     "pdf-parse": "^1.1.1",
     "remult": "^2.7.33",
     "solid-js": "^1.9.5",

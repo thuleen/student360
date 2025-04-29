@@ -45,11 +45,14 @@ export const POST: RequestHandler = async ({ request }) => {
       });
 
     } else {
-      const { rows } = parseCsv(buffer);
+      // Assuming CSV file
+      const result = parseCsv(buffer);
 
       return json({
         message: "CSV file parsed successfully",
-        rows,
+        headers: result.headers,
+        rowCount: result.rows.length,
+        sample: result.rows.slice(0, 5) // send first 5 rows as preview
       });
     }
 

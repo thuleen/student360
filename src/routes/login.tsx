@@ -21,7 +21,7 @@ export default function Home() {
     <main class="container mx-auto pt-21 max-w-md">
       <form action={loginAction} method="post">
         <div class="my-16 items-center">
-          <div class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-1 focus-within:-outline-offset-2 focus-within:outline-gray-600">
+          <div class="flex items-center rounded-md bg-white pl-3 outline-1 outline-gray-300 focus-within:outline-1 focus-within:-outline-offset-1 focus-within:outline-gray-300">
             <div class="shrink-0 text-base text-gray-500 select-none sm:text-sm/6">Username</div>
             <input
               type="text"
