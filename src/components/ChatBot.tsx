@@ -30,6 +30,11 @@ export default function ChatBot() {
     const userInput = input().trim();
     if (!userInput && !file()) return;
 
+    if (!file() && userInput) {
+      setMessages(prev => [...prev, { from: "user", text: userInput }]);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -48,8 +53,6 @@ export default function ChatBot() {
       }
 
       const data = await response.json();
-      console.log(data);
-
       // Example: Add user's question to chat
       if (userInput) {
         setMessages([...messages(), { from: "user", text: userInput }]);
