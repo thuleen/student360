@@ -1,7 +1,6 @@
 import { createSignal, For } from "solid-js";
 import { Plus, ArrowUp, X } from "lucide-solid";
 
-
 type Message = {
   from: "user" | "bot";
   text: string;
@@ -21,12 +20,9 @@ export default function ChatBot() {
       reader.onerror = reject;
     });
   };
+
   const handleFileRemove = () => {
     setFile(null);
-  };
-
-  const truncateFileName = (name: string, maxLength = 30) => {
-    return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
   };
 
   const handleSend = async (e: Event) => {
@@ -36,19 +32,8 @@ export default function ChatBot() {
 
     setLoading(true);
 
-    if (userInput) {
-      setMessages((prev) => [
-        ...prev,
-        { from: "user", text: userInput },
-      ]);
-    }
-
-    const formData = new FormData();
-    formData.append('file', file()!); // add file
-    formData.append('question', input()); // add question if needed
-
-    const fileData = await fileToBase64(file()!);
     try {
+      const fileData = file() ? await fileToBase64(file()!) : null;
       const response = await fetch('/api/upload-file', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,17 +48,21 @@ export default function ChatBot() {
       }
 
       const data = await response.json();
+      console.log(data);
 
-      // 👉 New: show success message in chat
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: `✅ File "${file()?.name}" uploaded successfully! Ready for questions...` }
-      ]);
+      // Example: Add user's question to chat
+      if (userInput) {
+        setMessages([...messages(), { from: "user", text: userInput }]);
+        setInput("");
+      }
+      // Future: Show bot's reply from API here
 
-      // Clear input after sending
-      setInput("");
-      setFile(null);
+      if (file()) {
+        setMessages(prev => [...prev, { from: "bot", text: `Successfully uploaded file ${file().name}` }]);
+        setFile(null);
+      }
 
+      await new Promise((r) => setTimeout(r, 3500));
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -81,10 +70,14 @@ export default function ChatBot() {
     }
   };
 
+  const truncateFileName = (name: string, maxLength = 30) => {
+    return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
+  };
+
   return (
     <main class="container mx-auto pt-21 px-3 h-screen flex flex-col">
       {/* Chat Area */}
-      <div class="flex-1 p-3 space-y-3 pb-36">
+      <div class="flex-1 p-3 space-y-3 pb-36 overflow-y-auto">
         <For each={messages()}>
           {(msg) => (
             <div class={msg.from === "user" ? "text-right" : "text-left"}>
@@ -100,6 +93,7 @@ export default function ChatBot() {
           )}
         </For>
       </div>
+
       {/* Input Panel */}
       <form
         onSubmit={handleSend}
@@ -109,11 +103,13 @@ export default function ChatBot() {
           {/* Text input */}
           <input
             type="text"
-            class="w-full border-none focus:outline-none focus:ring-0 p-3"
-            placeholder="Ask something..."
+            class="w-full border-none focus:outline-none focus:ring-0 p-3 disabled:opacity-50"
+            placeholder={loading() ? "Uploading..." : "Ask something..."}
             value={input()}
             onInput={(e) => setInput(e.currentTarget.value)}
+            disabled={loading()}
           />
+
           {/* File name preview */}
           {file() && (
             <div class="flex items-center gap-2 text-sm text-gray-500">
@@ -132,29 +128,37 @@ export default function ChatBot() {
               </button>
             </div>
           )}
+
           {/* Bottom action row */}
           <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+            {/* Upload Button */}
             <div class="flex items-center gap-3">
-              {/* Upload Button */}
               <input
                 id="file-upload"
                 type="file"
                 class="hidden"
                 onChange={(e) => setFile(e.currentTarget.files?.[0] || null)}
+                disabled={loading()}
               />
               <label
                 for="file-upload"
-                class="cursor-pointer w-8 h-8 flex items-center justify-center hover:bg-gray-100 border border-gray-300 rounded-full"
+                class={`cursor-pointer w-8 h-8 flex items-center justify-center hover:bg-gray-100 border border-gray-300 rounded-full ${loading() ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <Plus class="w-4 h-4" />
               </label>
             </div>
+
             {/* Send Button */}
             <button
               type="submit"
-              class="bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600"
+              class={`bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600 ${loading() ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={loading()}
             >
-              <ArrowUp class="w-5 h-5" />
+              {loading() ? (
+                <div class="w-5 h-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
+              ) : (
+                <ArrowUp class="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>
