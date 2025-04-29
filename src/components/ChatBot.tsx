@@ -30,9 +30,11 @@ export default function ChatBot() {
     const userInput = input().trim();
     if (!userInput && !file()) return;
 
-    if (userInput) {
+    if (userInput && !file()) {
       setMessages(prev => [...prev, { from: "user", text: userInput }]);
       setInput("");
+      console.log("fetch api/ask-ai");
+      return;
     }
 
     setLoading(true);
@@ -58,6 +60,11 @@ export default function ChatBot() {
       if (file()) {
         setMessages(prev => [...prev, { from: "bot", text: `Successfully uploaded file ${file().name}` }]);
         setFile(null);
+      }
+
+      if (userInput) {
+        setMessages(prev => [...prev, { from: "user", text: userInput }]);
+        setInput("");
       }
 
       await new Promise((r) => setTimeout(r, 3500));
