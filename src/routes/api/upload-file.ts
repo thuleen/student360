@@ -23,41 +23,56 @@ export const POST: RequestHandler = async ({ request }) => {
 
     // Check if it is a PDF by looking at magic numbers
     const fileStart = buffer.slice(0, 4).toString('utf-8');
-    console.log('File starts with:', fileStart);
 
     if (fileStart === '%PDF') {
-      console.log('Detected PDF file');
-
       return json({
         message: "PDF not supported yet",
       });
 
     }
 
-    else if (fileStart.startsWith('PK')) {
-      // PK is the start of ZIP files — XLSX files are ZIP archives internally
-      const { data, sheetNames } = parseExcel(buffer);
+    else if (fileStart.startsWith('PK')) { // Excel spreadsheet
+      try {
+        const { data, sheetNames } = parseExcel(buffer);
 
-      return json({
-        message: "Excel file parsed successfully",
-        sheets: sheetNames,
-        rows: data,
-      });
+        return json({
+          message: "Excel file parsed successfully",
+          sheets: sheetNames,
+          rows: data,
+        });
+      } catch (parseExcelError: unknown) {
+        return json(
+          {
+            message: 'Failed to parse Excel file. It may be corrupted or improperly formatted.',
+            error: parseExcelError instanceof Error ? parseExcelError.message : String(parseExcelError),
+          },
+          { status: 400 }
+        );
+      }
 
     } else {
       // Assuming CSV file
-      const result = parseCsv(buffer);
+      try {
+        const result = parseCsv(buffer);
 
-      return json({
-        message: "CSV file parsed successfully",
-        headers: result.headers,
-        rowCount: result.rows.length,
-        sample: result.rows.slice(0, 5) // send first 5 rows as preview
-      });
+        return json({
+          message: "CSV file parsed successfully",
+          headers: result.headers,
+          rowCount: result.rows.length,
+          sample: result.rows.slice(0, 5) // send first 5 rows as preview
+        });
+
+      } catch (parseCsvError: unknown) {
+        return json(
+          {
+            message: 'Failed to parse CSV file. It may be corrupted or improperly formatted.',
+            error: parseCsvError instanceof Error ? parseCsvError.message : String(parseCsvError),
+          },
+          { status: 400 }
+        );
+      }
     }
-
   } catch (error) {
-    console.error('Error processing file:', error);
     return json({ message: 'Failed to process file', error: String(error) }, { status: 500 });
   }
 };

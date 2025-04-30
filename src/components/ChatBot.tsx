@@ -21,6 +21,7 @@ export default function ChatBot() {
   const handleSend = async (e: Event) => {
     e.preventDefault();
     const userInput = input().trim();
+
     if (!userInput && !file()) return;
 
     if (userInput && !file()) {
@@ -29,9 +30,7 @@ export default function ChatBot() {
       console.log("fetch api/ask-ai");
       return;
     }
-
     setLoading(true);
-
     try {
       const fileData = file() ? await fileToBase64(file()!) : null;
       const response = await fetch('/api/upload-file', {
@@ -44,17 +43,17 @@ export default function ChatBot() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to upload file');
+        const errorData = await response.json();
+        const errorMessage = errorData?.message || 'Server error';
+        setMessages(prev => [...prev, { from: "bot", text: errorMessage }]);
+        return;
       }
 
       const data = await response.json();
-      // Future: Show bot's reply from API here
-
       if (file()) {
         setMessages(prev => [...prev, { from: "bot", text: `Successfully uploaded file ${file().name}` }]);
         setFile(null);
       }
-
       if (userInput) {
         setMessages(prev => [...prev, { from: "user", text: userInput }]);
         setInput("");
@@ -145,8 +144,8 @@ export default function ChatBot() {
             {/* Send Button */}
             <button
               type="submit"
-              class={`bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600 ${loading() ? "opacity-50 cursor-not-allowed" : ""}`}
-              disabled={loading()}
+              class={`bg-gray-700 text-white p-2 rounded-full hover:bg-gray-600 ${loading() || !input() && !file() ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={loading() || !input() && !file()}
             >
               {loading() ? (
                 <div class="w-5 h-5 animate-spin border-2 border-white border-t-transparent rounded-full" />
