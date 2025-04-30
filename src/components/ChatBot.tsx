@@ -27,10 +27,19 @@ export default function ChatBot() {
     if (userInput && !file()) {
       setMessages(prev => [...prev, { from: "user", text: userInput }]);
       setInput("");
-      console.log("fetch api/ask-ai");
+      console.log("fetch api/query");
       return;
     }
     setLoading(true);
+
+    if (userInput) {
+      setMessages(prev => [...prev, { from: "user", text: userInput }]);
+      setInput("");
+    }
+    if (file()) {
+      setMessages(prev => [...prev, { from: "user", text: `Upload file 📎${file().name}.` }]);
+    }
+
     try {
       const fileData = file() ? await fileToBase64(file()!) : null;
       const response = await fetch('/api/upload-file', {
@@ -38,6 +47,7 @@ export default function ChatBot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           file: fileData,
+          fileName: file().name,
           question: userInput,
         }),
       });
@@ -51,15 +61,9 @@ export default function ChatBot() {
 
       const data = await response.json();
       if (file()) {
-        setMessages(prev => [...prev, { from: "bot", text: `Successfully uploaded file ${file().name}` }]);
+        setMessages(prev => [...prev, { from: "bot", text: `${data.message}` }]);
         setFile(null);
       }
-      if (userInput) {
-        setMessages(prev => [...prev, { from: "user", text: userInput }]);
-        setInput("");
-      }
-      // Remove setTimeout in production
-      await new Promise((r) => setTimeout(r, 3000));
     } catch (error) {
       console.error('Error:', error);
     } finally {

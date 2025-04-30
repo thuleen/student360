@@ -6,7 +6,7 @@ import { parseExcel } from '~/shared/parsers/excel';
 
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const { file: fileBase64 } = await request.json();
+    const { file: fileBase64, fileName } = await request.json();
 
     if (!fileBase64) {
       return json({ message: 'No file uploaded' }, { status: 400 });
@@ -33,17 +33,17 @@ export const POST: RequestHandler = async ({ request }) => {
 
     else if (fileStart.startsWith('PK')) { // Excel spreadsheet
       try {
+        console.log(fileName);
         const { data, sheetNames } = parseExcel(buffer);
-
         return json({
-          message: "Excel file parsed successfully",
+          message: `✅ Parsed 📎${fileName} successfully!`,
           sheets: sheetNames,
           rows: data,
         });
       } catch (parseExcelError: unknown) {
         return json(
           {
-            message: 'Failed to parse Excel file. It may be corrupted or improperly formatted.',
+            message: '❌ Failed to parse Excel file. It may be corrupted or improperly formatted.',
             error: parseExcelError instanceof Error ? parseExcelError.message : String(parseExcelError),
           },
           { status: 400 }
@@ -56,7 +56,7 @@ export const POST: RequestHandler = async ({ request }) => {
         const result = parseCsv(buffer);
 
         return json({
-          message: "CSV file parsed successfully",
+          message: `✅ Parsed 📎${fileName} successfully!`,
           headers: result.headers,
           rowCount: result.rows.length,
           sample: result.rows.slice(0, 5) // send first 5 rows as preview
@@ -65,7 +65,7 @@ export const POST: RequestHandler = async ({ request }) => {
       } catch (parseCsvError: unknown) {
         return json(
           {
-            message: 'Failed to parse CSV file. It may be corrupted or improperly formatted.',
+            message: '❌ Failed to parse CSV file. It may be corrupted or improperly formatted.',
             error: parseCsvError instanceof Error ? parseCsvError.message : String(parseCsvError),
           },
           { status: 400 }
