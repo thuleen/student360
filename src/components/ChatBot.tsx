@@ -1,5 +1,7 @@
 import { createSignal, For } from "solid-js";
 import { Plus, ArrowUp, X } from "lucide-solid";
+import { truncateFileName, fileToBase64 } from "~/shared/utils/file";
+import { t } from "~/i18n";
 
 type Message = {
   from: "user" | "bot";
@@ -11,15 +13,6 @@ export default function ChatBot() {
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
   const [loading, setLoading] = createSignal(false);
-
-  const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-    });
-  };
 
   const handleFileRemove = () => {
     setFile(null);
@@ -66,17 +59,13 @@ export default function ChatBot() {
         setMessages(prev => [...prev, { from: "user", text: userInput }]);
         setInput("");
       }
-
-      await new Promise((r) => setTimeout(r, 3500));
+      // Remove setTimeout in production
+      await new Promise((r) => setTimeout(r, 3000));
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const truncateFileName = (name: string, maxLength = 30) => {
-    return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
   };
 
   return (

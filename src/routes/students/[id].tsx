@@ -3,7 +3,7 @@ import { onMount } from 'solid-js';
 import { createStore } from 'solid-js/store'
 import { useParams, A } from "@solidjs/router";
 import { repo } from "remult";
-import { Student } from "~/shared/Student";
+import { Student } from "~/shared/entities/student";
 
 const studentRepo = repo(Student);
 

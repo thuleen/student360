@@ -1,12 +1,12 @@
 import { createSignal, createResource } from "solid-js";
 import { remult } from "remult";
-import { Student } from "~/shared/Student"; // adjust import if needed
+import { Student } from "~/shared/entities/student";
 import { useNavigate } from "@solidjs/router";
 
 export default function StudentsPage() {
   const [search, setSearch] = createSignal("");
   const [searchTerm, setSearchTerm] = createSignal("");
-  const navigate = useNavigate(); // get navigate function from solid-start
+  const navigate = useNavigate();
 
   const studentRepo = remult.repo(Student);
 
