@@ -1,6 +1,6 @@
 import { Show, createSignal, onMount, createEffect } from "solid-js"
 import { remult } from "remult"
-import { Settings, Info, LogOut, User } from "lucide-solid";
+import { Settings, Info, LogOut, User, SquarePen } from "lucide-solid";
 import { A, useLocation } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
 import { useUserService } from "~/contexts/useUserService";
@@ -40,6 +40,10 @@ export default function Nav(props: {
     navigate("/login");
   }
 
+  const handleNewAnalyze = () => {
+    navigate("/analyze");
+  }
+
   return (
     <>
       {/* Sidebar Drawer */}
@@ -61,11 +65,18 @@ export default function Nav(props: {
         <div class="container mx-auto flex justify-between items-center p-3 text-gray-700">
           <div class="flex items-center space-x-3">
             <button
-              class="text-gray-500 hover:text-blue-500 focus:outline-none"
+              class="text-gray-500 hover:gray-200 focus:outline-none"
               onClick={() => props.setShowDrawer(!props.showDrawer())}
               aria-label="Open sidebar"
             >
               <img src={sidebarIcon} alt="Menu" class="w-6 h-6 object-contain rounded-md hover:bg-gray-200 cursor-pointer focus:outline-none" />
+            </button>
+            <button
+              class="cursor-pointer hover:text-gray-500 focus:outline-none"
+              onClick={() => handleNewAnalyze()}
+              aria-label="Open sidebar"
+            >
+              <SquarePen />
             </button>
             <div class="font-semibold text-lg">
               <A href="/">{APP_NAME}</A>
