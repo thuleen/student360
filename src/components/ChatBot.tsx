@@ -2,6 +2,7 @@ import { createSignal, For } from "solid-js";
 import { Plus, ArrowUp, X } from "lucide-solid";
 import { truncateFileName, fileToBase64 } from "~/shared/utils/file";
 import { t } from "~/i18n";
+import { sessionId } from "~/contexts/useSessionId";
 
 type Message = {
   from: "user" | "bot";
@@ -9,6 +10,7 @@ type Message = {
 };
 
 export default function ChatBot() {
+  const sId = sessionId();
   const [messages, setMessages] = createSignal<Message[]>([]);
   const [input, setInput] = createSignal("");
   const [file, setFile] = createSignal<File | null>(null);
@@ -159,6 +161,7 @@ export default function ChatBot() {
             </button>
           </div>
         </div>
+        <div class="p-1 text-gray-400">SID: {sId}</div>
       </form>
     </main>
   );
