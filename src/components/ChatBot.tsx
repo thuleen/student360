@@ -161,7 +161,7 @@ export default function ChatBot() {
             </button>
           </div>
         </div>
-        <div class="p-1 text-gray-400">SID: {sId}</div>
+        <code class="p-1 text-sm text-gray-400">{sId}</code>
       </form>
     </main>
   );
