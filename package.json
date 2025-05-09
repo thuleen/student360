@@ -7,11 +7,13 @@
     "start": "vinxi start"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.7.0",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.0",
     "@solidjs/start": "^1.1.0",
     "echarts": "^5.6.0",
     "lucide-solid": "^0.503.0",
+    "openai": "^4.97.0",
     "papaparse": "^5.5.2",
     "pdf-parse": "^1.1.1",
     "remult": "^2.7.33",

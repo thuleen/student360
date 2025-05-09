@@ -26,14 +26,34 @@ export default function ChatBot() {
 
     if (!userInput && !file()) return;
 
+    // User-only question
     if (userInput && !file()) {
       setMessages(prev => [...prev, { from: "user", text: userInput }]);
       setInput("");
-      console.log("fetch api/query");
+      setMessages(prev => [...prev, { from: "bot", text: "__loading__" }]);
+      setLoading(true);
+
+      try {
+        const res = await fetch('/api/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: userInput }),
+        });
+
+        const data = await res.json();
+        setMessages(prev => [...prev.slice(0, -1), { from: "bot", text: `${data.message}` }]);
+      } catch (err: any) {
+        console.error(err);
+        setMessages(prev => [...prev.slice(0, -1), { from: "bot", text: "Something went wrong." }]);
+      } finally {
+        setLoading(false);
+      }
+
       return;
     }
-    setLoading(true);
 
+    // Question with file
+    setLoading(true);
     if (userInput) {
       setMessages(prev => [...prev, { from: "user", text: userInput }]);
       setInput("");
@@ -42,6 +62,8 @@ export default function ChatBot() {
       setMessages(prev => [...prev, { from: "user", text: `Upload file 📎${file().name}.` }]);
     }
 
+    setMessages(prev => [...prev, { from: "bot", text: "__loading__" }]);
+
     try {
       const fileData = file() ? await fileToBase64(file()!) : null;
       const response = await fetch('/api/upload-file', {
@@ -49,7 +71,7 @@ export default function ChatBot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           file: fileData,
-          fileName: file().name,
+          fileName: file()?.name,
           question: userInput,
         }),
       });
@@ -57,17 +79,18 @@ export default function ChatBot() {
       if (!response.ok) {
         const errorData = await response.json();
         const errorMessage = errorData?.message || 'Server error';
-        setMessages(prev => [...prev, { from: "bot", text: errorMessage }]);
+        setMessages(prev => [...prev.slice(0, -1), { from: "bot", text: errorMessage }]);
         return;
       }
 
       const data = await response.json();
+      setMessages(prev => [...prev.slice(0, -1), { from: "bot", text: `${data.message}` }]);
       if (file()) {
-        setMessages(prev => [...prev, { from: "bot", text: `${data.message}` }]);
         setFile(null);
       }
     } catch (error) {
       console.error('Error:', error);
+      setMessages(prev => [...prev.slice(0, -1), { from: "bot", text: "Something went wrong." }]);
     } finally {
       setLoading(false);
     }
@@ -86,7 +109,13 @@ export default function ChatBot() {
                   : "bg-white text-black"
                   }`}
               >
-                {msg.text}
+                {msg.text === "__loading__" ? (
+                  <div class="flex justify-center items-center space-x-2">
+                    <div class="w-3.5 h-3.5 rounded-full bg-black animate-pulse" />
+                  </div>
+                ) : (
+                  msg.text
+                )}
               </div>
             </div>
           )}
@@ -103,12 +132,11 @@ export default function ChatBot() {
           <input
             type="text"
             class="w-full border-none focus:outline-none focus:ring-0 p-3 disabled:opacity-50"
-            placeholder={loading() ? "Uploading..." : "Ask something..."}
+            placeholder={loading() ? "..." : "Ask something..."}
             value={input()}
             onInput={(e) => setInput(e.currentTarget.value)}
             disabled={loading()}
           />
-
           {/* File name preview */}
           {file() && (
             <div class="flex items-center gap-2 text-sm text-gray-500">
@@ -127,7 +155,6 @@ export default function ChatBot() {
               </button>
             </div>
           )}
-
           {/* Bottom action row */}
           <div class="flex items-center justify-between pt-2 border-t border-gray-200">
             {/* Upload Button */}
@@ -146,7 +173,6 @@ export default function ChatBot() {
                 <Plus class="w-4 h-4" />
               </label>
             </div>
-
             {/* Send Button */}
             <button
               type="submit"
