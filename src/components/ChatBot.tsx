@@ -127,11 +127,11 @@ export default function ChatBot() {
         onSubmit={handleSend}
         class="sticky bottom-9 bg-white p-3"
       >
-        <div class="w-full border border-gray-300 rounded-xl p-3 flex flex-col gap-3">
+        <div class="w-full border border-gray-300 rounded-xl p-3 flex flex-col gap-3 shadow-[0_3px_9px_rgba(0,0,0,0.1)] border-t border-gray-100 dark:border-[#444654]">
           {/* Text input */}
           <input
             type="text"
-            class="w-full border-none focus:outline-none focus:ring-0 p-3 disabled:opacity-50"
+            class="w-full border-none focus:outline-none focus:ring-0 p-3 disabled:opacity-50 placeholder-gray-300"
             placeholder={loading() ? "..." : "Ask something..."}
             value={input()}
             onInput={(e) => setInput(e.currentTarget.value)}
